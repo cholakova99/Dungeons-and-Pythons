@@ -15,20 +15,3 @@ class Hero(Character):
 
     def known_as(self):
         return f'{self.name} known as {self.title}'
-
-    def equip(self, weapon):
-        if super().equiped_weapon is None and type(weapon) is Weapon:
-            self.equiped_weapon = weapon
-        elif super().equiped_spell is None and type(weapon) is Spell:
-            self.equiped_spell = weapon
-        else:
-            return
-
-    def learn(self,spell):
-        if type(spell) != Spell:
-            raise TypeError('You can only learn spells')
-        if self.equiped_spell != None:
-            ###### check if we will compare spells
-            self.equiped_spell = None
-        self.equiped_spell = spell
-
