@@ -49,3 +49,9 @@ class Character:
         self.curr_health -= damage
         if self.curr_health < 0:
             self.curr_health = 0
+
+    def equip(self, weapon):
+        self.equiped_weapon = weapon
+
+    def learn(self, spell):
+        self.equiped_spell = spell
