@@ -15,3 +15,12 @@ class Hero(Character):
 
     def known_as(self):
         return f'{self.name} known as {self.title}'
+
+    def attack(self, *, by):
+        if by == 'weapon':
+            if self.equiped_weapon != None:
+                return self.equiped_weapon.damage
+        if by == 'spell':
+            if super.can_cast():
+                return self.equiped_spell.damage
+        return 0
