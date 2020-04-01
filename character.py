@@ -36,15 +36,6 @@ class Character:
         if self.curr_mana > self.max_mana:
             self.curr_mana = self.max_mana
 
-    def attack(self, *, by):
-        if by == 'weapon':
-            if self.equiped_weapon != None:
-                return self.equiped_weapon.damage
-        if by == 'spell':
-            if self.can_cast():
-                return self.equiped_spell.damage
-        return 0
-
     def take_damage(self, damage):
         self.curr_health -= damage
         if self.curr_health < 0:
