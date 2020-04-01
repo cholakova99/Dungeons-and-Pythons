@@ -15,3 +15,6 @@ class WithEquipment:
 
     def __repr__(self):
         return self.__class__.name
+
+    def name_of_equipment(self):
+        return self.name
