@@ -6,4 +6,17 @@ class Enemy(Character):
 		self.damage = damage
 
 	def attack(self):
-		pass
+		spell_damage = 0
+		weapon_damage = 0
+
+		if self.can_cast():
+			spell_damage = self.equiped_spell.damage
+		if self.equiped_weapon != None:
+			weapon_damage = self.equiped_weapon.damage
+		
+		max_damage = max(spell_damage, weapon_damage, self.damage)
+
+		if max_damage == spell_damage:
+			self.mana -= self.equiped_spell.mana_cost
+		
+		return max_damage
