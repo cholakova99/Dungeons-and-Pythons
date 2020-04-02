@@ -19,6 +19,7 @@ class Dungeon:
             raise ValueError('Only hero allowed!')
         hero = to_be_hero
         hero.possition = self.hero_possition
+        self.lines[hero.possition[0]][hero.possition[1]] == "H"
 
     def create_map(self):
         map_game = []
