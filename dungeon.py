@@ -4,11 +4,11 @@ class Dungeon:
         if type(given_file) is not str:
             raise ValueError('Wrong imput for file')
         self.given_file = given_file
+        self.hero_possition = []
         self.lines = self.create_map()
         self.rows = len(self.lines)
         self.columns = len(self.lines[0])
-        self.row_pos = 0
-        self.col_pos = 0
+
 
     def create_map(self):
         map_game = []
@@ -22,12 +22,15 @@ class Dungeon:
 
     def correct_form(self, to_be_lines):
         first_line_len = len(to_be_lines[0])
-        for i in range(1,len(to_be_lines)-1):
+        for i in range(0,len(to_be_lines)-1):
             if len(to_be_lines[i]) != first_line_len:
                 return False
             for j in range(first_line_len):
                 if to_be_lines[i][j] not in allowed_symbols_for_map:
                     return False
+                if to_be_lines[i][j] == "S":
+                    self.hero_possition.append(i)
+                    self.hero_possition.append(j)
         return True
 
     def print_map(self):
@@ -36,57 +39,57 @@ class Dungeon:
 
     def move_hero(self,direction):
         if direction == "up":
-            if self.row_pos <= 0:
+            if self.hero_possition[0] <= 0:
                 return False
-            if self.check_next_step(self.row_pos-1,self.col_pos) == "path" or self.check_next_step(row_pos-1,col_pos) == "starting":
-                self.row_pos -= 1
-            elif self.check_next_step(self.row_pos-1,self.col_pos) == "enemy":
+            if self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "path" or self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "starting":
+                self.hero_possition[0] -= 1
+            elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "enemy":
                 pass #BAAATTTLEE
-            elif self.check_next_step(self.row_pos-1,self.col_pos) == "gateway":
+            elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.row_pos-1,self.col_pos) == "treasure":
+            elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "treasure":
                 pass #we will see
             else:
                 return False
 
         elif direction =="down":
-            if self.row_pos >= self.rows - 1:
+            if self.hero_possition[0] >= self.rows - 1:
                 return False
-            if self.check_next_step(self.row_pos+1,self.col_pos) == "path" or self.check_next_step(self.row_pos+1,self.col_pos) == "starting":
-                self.row_pos +=1
-            elif self.check_next_step(self.row_pos+1,self.col_pos) == "enemy":
+            if self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "path" or self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "starting":
+                self.hero_possition[0] +=1
+            elif self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "enemy":
                 pass #BAAATTTLEE
-            elif self.check_next_step(self.row_pos+1,self.col_pos) == "gateway":
+            elif self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.row_pos+1,self.col_pos) == "treasure":
+            elif self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "treasure":
                 pass #we will see
             else:
                 return False
 
         elif direction == "left":
-            if self.col_pos <= 0:
+            if self.hero_possition[1] <= 0:
                 return False
-            if self.check_next_step(self.row_pos,self.col_pos-1) == "path" or self.check_next_step(self.row_pos,self.col_pos-1) == "starting":
+            if self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "path" or self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "starting":
                 self.col_pos -= 1
-            elif self.check_next_step(self.row_pos,self.col_pos-1) == "enemy":
+            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "enemy":
                 pass #BAAATTTLEE
-            elif self.check_next_step(self.row_pos,self.col_pos-1) == "gateway":
+            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.row_pos,self.col_pos-1) == "treasure":
+            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "treasure":
                 pass #we will see
             else:
                 return False
 
         elif direction == "right":
-            if self.col_pos >= self.columns - 1:
+            if self.hero_possition[1] >= self.columns - 1:
                 return False
-            if self.check_next_step(self.row_pos,self.col_pos+1) == "path" or self.check_next_step(self.row_pos,self.col_pos+1) == "starting":
+            if self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "path" or self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "starting":
                 self.col_pos +=1
-            elif self.check_next_step(self.row_pos,self.col_pos+1) == "enemy":
+            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "enemy":
                 pass #BAAATTTLEE
-            elif self.check_next_step(self.row_pos,self.col_pos+1) == "gateway":
+            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.row_pos,self.col_pos+1) == "treasure":
+            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "treasure":
                 pass #we will see
             else:
                 return False
