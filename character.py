@@ -15,7 +15,7 @@ class Character:
         return self.curr_mana
 
     def is_alive(self):
-        return curr_health != 0
+        return self.curr_health != 0
 
     def can_cast(self):
         if self.equiped_spell != None:
