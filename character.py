@@ -6,6 +6,7 @@ class Character:
         self.curr_mana = mana
         self.equiped_weapon = None
         self.equiped_spell = None
+        self.position = []
 
     def get_health(self):
         return self.curr_health
