@@ -25,8 +25,8 @@ class Hero(Character):
                 return self.equiped_spell.damage
         return 0
 
-    def increase_mana(self,to_be_added_to_mana):
-        self.mana += to_be_added_to_mana
+    # def increase_mana(self,to_be_added_to_mana):
+    #     super().mana += to_be_added_to_mana
 
-    def increase_health(self,to_be_added_to_health):
-        self.health += to_be_added_to_health
+    # def increase_health(self,to_be_added_to_health):
+    #     self.health += to_be_added_to_health

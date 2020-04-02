@@ -8,8 +8,15 @@ class TestDungeon(unittest.TestCase):
         d = Dungeon(c)
         h = Hero(name="Pesho",title="The Great One",health=100,mana=10,mana_regeneration_rate=30)
         d.spawn(h)
+        print(d.hero.known_as())
         print(d.lines)
         print(d.hero_possition)
+        k = d.move_hero("right")
+        print(k)
+        d.create_treasures("treasure.txt")
+        print(d.treasures)
+        k = d.move_hero("down")
+
 
 
 if __name__ == '__main__':
