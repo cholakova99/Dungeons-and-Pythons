@@ -7,7 +7,7 @@ class TestDungeon(unittest.TestCase):
         d = Dungeon(c)
         #answer = d.create_map()
         print(d.lines)
-        print(d.possition)
+        print(d.hero_possition)
 
 
 if __name__ == '__main__':
