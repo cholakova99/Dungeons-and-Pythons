@@ -5,7 +5,7 @@ class Hero(Character):
             raise TypeError('Only strings are allowed for name and title!')
         if type(health) is not int or type(mana) is not int or type(mana_regeneration_rate) is not int:
             raise TypeError('Only integers are allowed for health, mana and rate while creating hero')
-        super.__init__(health,mana)
+        super().__init__(health=health,mana=mana)
         self.name = name
         self.title = title
         self.mana_regeneration_rate = mana_regeneration_rate
