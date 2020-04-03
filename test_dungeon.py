@@ -15,7 +15,6 @@ class TestDungeon(unittest.TestCase):
         print(d.hero_possition)
         d.move_hero("right")
         d.move_hero("down")
-        print(d.treasures)
         d.move_hero("down")
         d.print_map()
 
