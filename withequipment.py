@@ -11,10 +11,7 @@ class WithEquipment:
         return self.name == other.name and self.damage == other.damage
 
     def __str__(self):
-        return self.__class__.name
+        return self.name
 
     def __repr__(self):
-        return self.__class__.name
-
-    def name_of_equipment(self):
         return self.name
