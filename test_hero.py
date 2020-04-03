@@ -39,6 +39,24 @@ class TestHero(unittest.TestCase):
         h.learn(s)
         self.assertEqual(h.equiped_spell.name, "Abrakadabra")
 
+    def test_take_mana(self):
+        h = Hero(name="Pesho", title="The Great One", health=100, mana=10, mana_regeneration_rate=30)
+        h.curr_mana = 0
+        h.take_mana(5)
+        self.assertEqual(h.curr_mana, 5)
+
+    def test_cannot_cast(self):
+        h = Hero(name="Pesho", title="The Great One", health=100, mana=10, mana_regeneration_rate=30)
+        s = Spell(name="Abrakadabra", damage=50, mana_cost=20, cast_range=4)
+        h.learn(s)
+        self.assertEqual(False, h.can_cast())
+
+    def test_can_cast(self):
+        h = Hero(name="Pesho", title="The Great One", health=100, mana=10, mana_regeneration_rate=30)
+        s = Spell(name="Abrakadabra", damage=50, mana_cost=2, cast_range=4)
+        h.learn(s)
+        self.assertEqual(True, h.can_cast())
+
 
 if __name__ == '__main__':
     unittest.main()
