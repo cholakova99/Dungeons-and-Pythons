@@ -73,7 +73,7 @@ class Dungeon:
             self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
 
     def move_hero(self, direction):
-        if direction == "up":
+        if direction == "u":
             if self.hero.position[0] <= 0:
                 return False
             helper = self.check_next_step(self.hero.position[0] - 1, self.hero.position[1])
@@ -83,7 +83,7 @@ class Dungeon:
             self.hero.position[0] -= 1
             self.make_move_changes(helper)
 
-        elif direction == "down":
+        elif direction == "d":
             if self.hero.position[0] >= self.rows - 1:
                 return False
             helper = self.check_next_step(self.hero.position[0] + 1, self.hero.position[1])
@@ -93,7 +93,7 @@ class Dungeon:
             self.hero.position[0] += 1
             self.make_move_changes(helper)
 
-        elif direction == "left":
+        elif direction == "l":
             if self.hero.position[1] <= 0:
                 return False
             helper = self.check_next_step(self.hero.position[0], self.hero.position[1] - 1)
@@ -103,7 +103,7 @@ class Dungeon:
             self.hero.position[1] -= 1
             self.make_move_changes(helper)
 
-        elif direction == "right":
+        elif direction == "r":
             if self.hero.position[1] >= self.columns - 1:
                 return False
             helper = self.check_next_step(self.hero.position[0], self.hero.position[1] + 1)
@@ -143,6 +143,59 @@ class Dungeon:
                     enemy.position = [i, j]
                     # Here we can add a chance to equip weapon or learn a spell
                     self.enemies.append(enemy)
+
+    def check_for_enemies_in_range(self):
+        spell_range = self.hero.equiped_spell.cast_range
+        row, col = self.hero.position
+        # Look up
+        for i in range(spell_range):
+            if row - i >= 0:
+                if self.lines[row - i][col] == 'E':
+                    for enemy in self.enemies:
+                        if enemy.position == [row - i, col]:
+                            return enemy
+                if self.lines[row - i][col] != '.':
+                    break
+        # Look down
+        for i in range(spell_range):
+            if row + i < self.rows:
+                if self.lines[row + i][col] == 'E':
+                    for enemy in self.enemies:
+                        if enemy.position == [row + i, col]:
+                            return enemy
+                if self.lines[row + i][col] != '.':
+                    break
+        # Look left
+        for i in range(spell_range):
+            if col - i >= 0:
+                if self.lines[row][col - i] == 'E':
+                    for enemy in self.enemies:
+                        if enemy.position == [row, col - i]:
+                            return enemy
+                if self.lines[row][col - i] != '.':
+                    break
+        for i in range(spell_range):
+            if col + i < self.columns:
+                if self.lines[row][col + i] == 'E':
+                    for enemy in self.enemies:
+                        if enemy.position == [row, col + i]:
+                            return enemy
+                if self.lines[row][col + i] != '.':
+                    break
+
+    def hero_attack(self, *, by):
+        if by == 'spell':
+            if self.hero.can_cast():
+                enemy = self.check_for_enemies_in_range()
+                if enemy is not None:
+                    fight = Fight(self.hero, enemy)
+                    fight.start()
+                else:
+                    print(f'Nothing in cast range {self.hero.equiped_spell.cast_range}.')
+            else:
+                print('You can\'t cast a spell.')
+        if by == 'weapon':
+            print('There are no enemies at you position.')
 
 # WITH FILE
     def create_treasures(self, file_treasures):
