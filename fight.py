@@ -1,9 +1,7 @@
-from hero import Hero
-from enemy import Enemy
 
 
 class Fight:
-    def __init__(self, * , hero, enemy):
+    def __init__(self, *, hero, enemy):
         self.hero = hero
         self.enemy = enemy
 
@@ -73,9 +71,11 @@ class Fight:
         other_class = other.__class__.__name__
 
         if by == 'weapon':
-            message = f'{char_class} hits with {self.hero.equiped_weapon.name} for {self.hero.equiped_weapon.damage} dmg.'
+            message = f'{char_class} hits with {self.hero.equiped_weapon.name}'
+            message += f' for {self.hero.equiped_weapon.damage} dmg.'
         if by == 'spell':
-            message = f'{char_class} casts {self.hero.equiped_spell.name}, hits {other_class.lower()} for {self.hero.equiped_spell.damage} dmg.'
+            message = f'{char_class} casts {self.hero.equiped_spell.name},'
+            message += f' hits {other_class.lower()} for {self.hero.equiped_spell.damage} dmg.'
             message += f' {char_class} has {self.hero.curr_mana} mana left.'
         if by == 'basic' and char_class == 'Hero':
             message = 'Hero tries to attack the enemy but fails miserably, dealing 0 dmg to the enemy.'
@@ -88,7 +88,8 @@ class Fight:
 
     def print_start_of_fight(self):
         message = f'A fight is started between our Hero(health={self.hero.curr_health}, mana={self.hero.curr_mana}) '
-        message += f'and Enemey(health={self.enemy.curr_health}, mana={self.enemy.curr_mana}, damage={self.enemy.damage})'
+        message += f'and Enemey(health={self.enemy.curr_health}, '
+        message += f'mana={self.enemy.curr_mana}, damage={self.enemy.damage})'
 
         print(message)
 
@@ -106,15 +107,15 @@ class Fight:
         ]
 
     def move_character(self, character, distance):
-        #have to move down
+        # have to move down
         if distance[0] > 0:
             character.position[0] -= 1
-        #have to move up
+        # have to move up
         if distance[0] < 0:
             character.position[0] += 1
-        #have to move left
+        # have to move left
         if distance[1] > 0:
             character.position[1] -= 1
-        #have to move right
+        # have to move right
         if distance[1] < 0:
             character.position[1] += 1
