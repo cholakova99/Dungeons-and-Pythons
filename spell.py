@@ -8,3 +8,6 @@ class Spell(WithEquipment):
         super().__init__(name=name, damage=damage)
         self.mana_cost = mana_cost
         self.cast_range = cast_range
+
+    def __eq__(self, other):
+        return super().__eq__(other)
