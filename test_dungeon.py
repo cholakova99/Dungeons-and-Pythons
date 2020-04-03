@@ -12,15 +12,11 @@ class TestDungeon(unittest.TestCase):
         print(d.hero.known_as())
         print(d.lines)
         print(d.hero_possition)
-        k = d.move_hero("right")
-        k = d.move_hero("down")
-        #print(k)
-        
+        d.move_hero("right")
+        d.move_hero("down")
         print(d.treasures)
-        k = d.move_hero("down")
+        d.move_hero("down")
         d.print_map()
-
-
 
 if __name__ == '__main__':
     unittest.main()

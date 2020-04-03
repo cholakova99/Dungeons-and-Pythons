@@ -142,7 +142,6 @@ class Dungeon:
         else:
             return "Wrong direction"
 
-
     def check_next_step(self, row_index, col_index):
         if self.lines[row_index][col_index] == "G":
             return "gateway"
