@@ -13,7 +13,7 @@ class Dungeon:
         self.hero_possition = []
         self.treasures = []
         self.lines = self.create_map()
-        self.change_start_possition()
+        # self.change_start_possition()
         self.rows = len(self.lines)
         self.columns = len(self.lines[0])
         self.hero = None
@@ -24,9 +24,9 @@ class Dungeon:
         self.hero = to_be_hero
         self.hero.possition = self.hero_possition
 
-    def change_start_possition(self):
-        self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
-            "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+    # def change_start_possition(self):
+    #     self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+    #         "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
 
     def create_map(self):
         with open(self.given_file, 'r') as file:
@@ -73,20 +73,20 @@ class Dungeon:
             if self.hero_possition[0] <= 0:
                 return False
             helper = self.check_next_step(self.hero_possition[0] - 1, self.hero_possition[1])
-            if helper == "path" or helper == "starting":
-                self.hero_possition[0] -= 1
+            if helper == "path":
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[0] -= 1
             elif helper == "enemy":
-                self.hero_possition[0] -= 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[0] -= 1
             elif helper == "gateway":
                 pass #we will see
             elif helper == "treasure":
-                self.hero_possition[0] -= 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[0] -= 1
                 self.take_treasure()
             else:
                 return False
@@ -95,21 +95,22 @@ class Dungeon:
             if self.hero_possition[0] >= self.rows - 1:
                 return False
             helper = self.check_next_step(self.hero_possition[0] + 1, self.hero_possition[1])
-            if helper == "path" or helper == "starting":
-                self.hero_possition[0] += 1
+            if helper == "path":
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[0] += 1
             elif helper == "enemy":
-                self.hero_possition[0] += 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[0] += 1
             elif helper == "gateway":
-                pass #we will see
+                pass 
+                #we will see
             elif helper == "treasure":
-                self.take_treasure()
-                self.hero_possition[0] += 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[0] += 1
+                self.take_treasure()
             else:
                 return False
 
@@ -117,21 +118,22 @@ class Dungeon:
             if self.hero_possition[1] <= 0:
                 return False
             helper = self.check_next_step(self.hero_possition[0], self.hero_possition[1] - 1)
-            if helper == "path" or helper == "starting":
-                self.hero_possition[1] -= 1
+            if helper == "path":
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[1] -= 1
             elif helper == "enemy":
-                self.hero_possition[1] -= 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[1] -= 1
             elif helper == "gateway":
-                pass #we will see
+                pass 
+                #we will see
             elif helper == "treasure":
-                self.take_treasure()
-                self.hero_possition[1] -= 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[1] -= 1
+                self.take_treasure()
             else:
                 return False
 
@@ -139,21 +141,22 @@ class Dungeon:
             if self.hero_possition[1] >= self.columns - 1:
                 return False
             helper = self.check_next_step(self.hero_possition[0], self.hero_possition[1] + 1)
-            if helper == "path" or helper == "starting":
-                self.hero_possition[1] += 1
+            if helper == "path":
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[1] += 1
             elif helper == "enemy":
-                self.hero_possition[1] += 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[1] += 1
             elif helper == "gateway":
-                pass #we will see
+                pass 
+                #we will see
             elif helper == "treasure":
-                self.take_treasure()
-                self.hero_possition[1] += 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
                     "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+                self.hero_possition[1] += 1
+                self.take_treasure()
             else:
                 return False
         else:
@@ -196,5 +199,6 @@ class Dungeon:
             w = Weapon(name=self.treasures[num][1], damage=self.treasures[num][2])
             self.hero.equip(w)
         if self.treasures[num][0] == "spell":
-            s = Spell(name=self.treasures[num][1], damage=self.treasures[num][2], mana_cost=self.treasures[num][3], cast_range=self.treasures[num][4])
+            s = Spell(name=self.treasures[num][1], damage=self.treasures[num][2],
+                      mana_cost=self.treasures[num][3], cast_range=self.treasures[num][4])
             self.hero.learn(s)
