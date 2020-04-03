@@ -12,7 +12,6 @@ class Dungeon:
         if type(given_file) is not str:
             raise ValueError('Wrong imput for file')
         self.given_file = given_file
-        self.hero_position = []
         self.treasures = []
         self.enemies = []
         self.lines = self.create_map()
@@ -20,11 +19,17 @@ class Dungeon:
         self.columns = len(self.lines[0])
         self.hero = None
 
+    def find_spawn_point(self):
+        for i in range(len(self.lines)):
+            for j in range(len(self.lines[i])):
+                if self.lines[i][j] == 'S':
+                    return [i][j]
+
     def spawn(self, to_be_hero):
         if type(to_be_hero) != Hero:
             raise ValueError('Only hero allowed!')
         self.hero = to_be_hero
-        self.hero.position = self.hero_position
+        self.hero.position = self.find_spawn_point()
         self.create_enemies()
 
     def change_possition_value(self, row_index, col_index, strng):
@@ -41,7 +46,6 @@ class Dungeon:
         return to_be_lines
 
     def correct_form(self, to_be_lines):
-        first_met = False
         first_line_len = len(to_be_lines[0])
         for i in range(0, len(to_be_lines) - 1):
             if len(to_be_lines[i]) != first_line_len:
@@ -49,111 +53,65 @@ class Dungeon:
             for j in range(first_line_len):
                 if to_be_lines[i][j] not in allowed_symbols_for_map:
                     return False
-                if to_be_lines[i][j] == "S" and first_met is False:
-                    first_met = True
-                    self.hero_position.append(i)
-                    self.hero_position.append(j)
-
         return True
 
     def print_map(self):
         for line in self.lines:
             print(line)
 
-    def refactored_move_hero(self, direction):
-        if direction == "up":
-            if self.hero.position[0] == 0:
-                return False
-            next_pos = self.check_next_step(self.hero.position[0] - 1, self.hero.position[1])
-            if next_pos == '#':
-                return False
-            self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-            
-
-
-    def move_hero(self, direction):
-        if direction == "up":
-            if self.hero_position[0] <= 0:
-                return False
-            helper = self.check_next_step(self.hero_position[0] - 1, self.hero_position[1])
-            if helper == "path":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[0] -= 1
-                self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
-            elif helper == "enemy":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[0] -= 1
+    def make_move_changes(self, helper):
+        if helper == 'enemy':
                 for enemy in self.enemies:
                     if enemy.position == self.hero.position:
                         fight = Fight(hero=self.hero, enemy=enemy)
                         fight.start()
-                        if self.hero.is_alive():
-                            self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
-            elif helper == "gateway":
-                pass
-            elif helper == "treasure":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[0] -= 1
-                self.take_treasure()
-            else:
+        if helper == 'treasure':
+            self.take_treasure()
+        if helper == 'gateway':
+            pass  # TO DO
+        if self.hero.is_alive():
+            self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
+
+    def move_hero(self, direction):
+        if direction == "up":
+            if self.hero.position[0] <= 0:
                 return False
+            helper = self.check_next_step(self.hero.position[0] - 1, self.hero.position[1])
+            if helper == 'obstacle':
+                return False
+            self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
+            self.hero.position[0] -= 1
+            self.make_move_changes(helper)
 
         elif direction == "down":
-            if self.hero_position[0] >= self.rows - 1:
+            if self.hero.position[0] >= self.rows - 1:
                 return False
-            helper = self.check_next_step(self.hero_position[0] + 1, self.hero_position[1])
-            if helper == "path":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[0] += 1
-            elif helper == "enemy":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[0] += 1
-            elif helper == "gateway":
-                pass
-            elif helper == "treasure":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[0] += 1
-                self.take_treasure()
-            else:
+            helper = self.check_next_step(self.hero.position[0] + 1, self.hero.position[1])
+            if helper == 'obstacle':
                 return False
+            self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
+            self.hero.position[0] += 1
+            self.make_move_changes(helper)
 
         elif direction == "left":
-            if self.hero_position[1] <= 0:
+            if self.hero.position[1] <= 0:
                 return False
-            helper = self.check_next_step(self.hero_position[0], self.hero_position[1] - 1)
-            if helper == "path":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[1] -= 1
-            elif helper == "enemy":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[1] -= 1
-            elif helper == "gateway":
-                pass
-            elif helper == "treasure":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[1] -= 1
-                self.take_treasure()
-            else:
+            helper = self.check_next_step(self.hero.position[0], self.hero.position[1] - 1)
+            if helper == 'obstacle':
                 return False
+            self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
+            self.hero.position[1] -= 1
+            self.make_move_changes(helper)
 
         elif direction == "right":
-            if self.hero_position[1] >= self.columns - 1:
+            if self.hero.position[1] >= self.columns - 1:
                 return False
-            helper = self.check_next_step(self.hero_position[0], self.hero_position[1] + 1)
-            if helper == "path":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[1] += 1
-            elif helper == "enemy":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[1] += 1
-            elif helper == "gateway":
-                pass
-            elif helper == "treasure":
-                self.change_possition_value(self.hero_position[0], self.hero_position[1], ".")
-                self.hero_position[1] += 1
-                self.take_treasure()
-            else:
+            helper = self.check_next_step(self.hero.position[0], self.hero.position[1] + 1)
+            if helper == 'obstacle':
                 return False
+            self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
+            self.hero.position[1] += 1
+            self.make_move_changes(helper)
         else:
             return "Wrong direction"
 
