@@ -25,7 +25,8 @@ class Dungeon:
         self.hero.possition = self.hero_possition
 
     def change_start_possition(self):
-        self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+        self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+            "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
 
     def create_map(self):
         with open(self.given_file, 'r') as file:
@@ -71,72 +72,88 @@ class Dungeon:
         if direction == "up":
             if self.hero_possition[0] <= 0:
                 return False
-            if self.check_next_step(self.hero_possition[0]-1, self.hero_possition[1]) == "path" or self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "starting":
+            helper = self.check_next_step(self.hero_possition[0] - 1, self.hero_possition[1])
+            if helper == "path" or helper == "starting":
                 self.hero_possition[0] -= 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "enemy":
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "enemy":
                 self.hero_possition[0] -= 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "gateway":
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "treasure":
+            elif helper == "treasure":
                 self.hero_possition[0] -= 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
                 self.take_treasure()
             else:
                 return False
 
-        elif direction =="down":
+        elif direction == "down":
             if self.hero_possition[0] >= self.rows - 1:
                 return False
-            if self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "path" or self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "starting":
-                self.hero_possition[0] +=1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "enemy":
-                self.hero_possition[0] +=1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "gateway":
+            helper = self.check_next_step(self.hero_possition[0] + 1, self.hero_possition[1])
+            if helper == "path" or helper == "starting":
+                self.hero_possition[0] += 1
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "enemy":
+                self.hero_possition[0] += 1
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.hero_possition[0]+1,self.hero_possition[1]) == "treasure":
+            elif helper == "treasure":
                 self.take_treasure()
-                self.hero_possition[0] +=1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
+                self.hero_possition[0] += 1
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
             else:
                 return False
 
         elif direction == "left":
             if self.hero_possition[1] <= 0:
                 return False
-            if self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "path" or self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "starting":
+            helper = self.check_next_step(self.hero_possition[0], self.hero_possition[1] - 1)
+            if helper == "path" or helper == "starting":
                 self.hero_possition[1] -= 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "enemy":
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "enemy":
                 self.hero_possition[1] -= 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "gateway":
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]-1) == "treasure":
+            elif helper == "treasure":
                 self.take_treasure()
                 self.hero_possition[1] -= 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
             else:
                 return False
 
         elif direction == "right":
             if self.hero_possition[1] >= self.columns - 1:
                 return False
-            if self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "path" or self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "starting":
-                self.hero_possition[1] +=1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "enemy":
+            helper = self.check_next_step(self.hero_possition[0], self.hero_possition[1] + 1)
+            if helper == "path" or helper == "starting":
                 self.hero_possition[1] += 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
-            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "gateway":
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "enemy":
+                self.hero_possition[1] += 1
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
+            elif helper == "gateway":
                 pass #we will see
-            elif self.check_next_step(self.hero_possition[0],self.hero_possition[1]+1) == "treasure":
+            elif helper == "treasure":
                 self.take_treasure()
                 self.hero_possition[1] += 1
-                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
+                self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + \
+                    "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
             else:
                 return False
         else:
