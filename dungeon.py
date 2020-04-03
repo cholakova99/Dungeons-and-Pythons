@@ -179,11 +179,9 @@ class Dungeon:
         if self.treasures[num][0] == "mana":
             self.hero.take_mana(self.treasures[num][1])
             print(self.treasures[num][1])
-            print("got mana")
         if self.treasures[num][0] == "health":
             self.hero.take_healing(self.treasures[num][1])
             print(self.treasures[num][1])
-            print("got health")
         if self.treasures[num][0] == "weapon":
             w = Weapon(name=self.treasures[num][1], damage=self.treasures[num][2])
             self.hero.equip(w)
