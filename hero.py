@@ -23,6 +23,6 @@ class Hero(Character):
             if self.equiped_weapon is not None:
                 return self.equiped_weapon.damage
         if by == 'spell':
-            if super.can_cast():
+            if super().can_cast():
                 return self.equiped_spell.damage
         return 0

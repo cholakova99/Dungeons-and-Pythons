@@ -130,8 +130,8 @@ class Dungeon:
             return "starting"
 
     def create_enemies(self):
-        for i in range(self.lines):
-            for j in range(self.lines[i]):
+        for i in range(len(self.lines)):
+            for j in range(len(self.lines[i])):
                 if self.lines[i][j] == 'E':
                     hero_hp = self.hero.max_health
                     hero_mana = self.hero.max_mana
