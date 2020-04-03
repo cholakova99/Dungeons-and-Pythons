@@ -1,11 +1,12 @@
-allowed_symbols_for_map = ["#","S","T","E",".","G"]
 from random import randint
 from hero import Hero
 from spell import Spell
 from weapon import Weapon
+allowed_symbols_for_map = ["#", "S", "T", "E", ".", "G"]
+
 
 class Dungeon:
-    def __init__(self,given_file):
+    def __init__(self, given_file):
         if type(given_file) is not str:
             raise ValueError('Wrong imput for file')
         self.given_file = given_file
@@ -17,29 +18,28 @@ class Dungeon:
         self.columns = len(self.lines[0])
         self.hero = None
 
-    def spawn(self,to_be_hero):
+    def spawn(self, to_be_hero):
         if type(to_be_hero) != Hero:
             raise ValueError('Only hero allowed!')
         self.hero = to_be_hero
         self.hero.possition = self.hero_possition
 
     def change_start_possition(self):
-        self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
+        self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1] + 1:]
 
     def create_map(self):
-        map_game = []
-        with open(self.given_file,'r') as file:
+        with open(self.given_file, 'r') as file:
             to_be_lines = file.readlines()
-        for i in range(0,len(to_be_lines)):
+        for i in range(0, len(to_be_lines)):
             to_be_lines[i] = to_be_lines[i][:-1]
         if self.correct_form(to_be_lines) is False:
             raise ValueError('Text format cannot be parsed to map')
-        return to_be_lines  
+        return to_be_lines
 
     def correct_form(self, to_be_lines):
         first_met = False
         first_line_len = len(to_be_lines[0])
-        for i in range(0,len(to_be_lines)-1):
+        for i in range(0, len(to_be_lines) - 1):
             if len(to_be_lines[i]) != first_line_len:
                 return False
             for j in range(first_line_len):
@@ -56,22 +56,22 @@ class Dungeon:
         for i in range(len(self.lines)):
             if i == self.hero_possition[0]:
                 helper = ""
-                for j in range(0,len(self.lines[i])):
+                for j in range(0, len(self.lines[i])):
                     if j == self.hero_possition[1]:
                         helper += "H"
                     else:
                         helper += self.lines[i][j]
-        for i in range(0,len(self.lines)):
+        for i in range(0, len(self.lines)):
             if i == self.hero_possition[0]:
                 print(helper)
             else:
                 print(self.lines[i])
 
-    def move_hero(self,direction):
+    def move_hero(self, direction):
         if direction == "up":
             if self.hero_possition[0] <= 0:
                 return False
-            if self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "path" or self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "starting":
+            if self.check_next_step(self.hero_possition[0]-1, self.hero_possition[1]) == "path" or self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "starting":
                 self.hero_possition[0] -= 1
                 self.lines[self.hero_possition[0]] = self.lines[self.hero_possition[0]][:self.hero_possition[1]] + "." + self.lines[self.hero_possition[0]][self.hero_possition[1]+1:]
             elif self.check_next_step(self.hero_possition[0]-1,self.hero_possition[1]) == "enemy":
@@ -143,7 +143,7 @@ class Dungeon:
             return "Wrong direction"
 
 
-    def check_next_step(self,row_index,col_index,):
+    def check_next_step(self, row_index, col_index):
         if self.lines[row_index][col_index] == "G":
             return "gateway"
         elif self.lines[row_index][col_index] == "E":
@@ -157,8 +157,8 @@ class Dungeon:
         else:
             return "starting"
 
-    ################### WITH FILE
-    def create_treasures(self,file_treasures):
+# WITH FILE
+    def create_treasures(self, file_treasures):
         with open(file_treasures, 'r') as file_treasures:
             self.treasures = file_treasures.readlines()
         for i in range(len(self.treasures)):
@@ -167,19 +167,18 @@ class Dungeon:
             if len(self.treasures[i]) == 2:
                 self.treasures[i][1] = int(self.treasures[i][1])
             if len(self.treasures[i]) > 2:
-                for j in range(2,len(self.treasures[i])):
+                for j in range(2, len(self.treasures[i])):
                     self.treasures[i][j] = int(self.treasures[i][j])
-    
+
     def take_treasure(self):
-        num = randint(0,len(self.treasures)-1)
+        num = randint(0, len(self.treasures) - 1)
         if self.treasures[num][0] == "mana":
             self.hero.take_mana(self.treasures[num][1])
         if self.treasures[num][0] == "health":
             self.hero.take_healing(self.treasures[num][1])
         if self.treasures[num][0] == "weapon":
-            w = Weapon(name=self.treasures[num][1],damage=self.treasures[num][2])
+            w = Weapon(name=self.treasures[num][1], damage=self.treasures[num][2])
             self.hero.equip(w)
         if self.treasures[num][0] == "spell":
-            s = Spell(name=self.treasures[num][1],damage=self.treasures[num][2],mana_cost=self.treasures[num][3],cast_range=self.treasures[num][4])
+            s = Spell(name=self.treasures[num][1], damage=self.treasures[num][2], mana_cost=self.treasures[num][3], cast_range=self.treasures[num][4])
             self.hero.learn(s)
-

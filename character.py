@@ -18,14 +18,13 @@ class Character:
         return self.curr_health != 0
 
     def can_cast(self):
-        if self.equiped_spell != None:
+        if self.equiped_spell is not None:
             return self.curr_mana - self.equiped_spell.mana_cost >= 0
         return False
 
     def take_healing(self, healing_points):
         if not self.is_alive():
             return False
-        
         self.curr_health += healing_points
         if self.curr_health > self.max_health:
             self.curr_health = self.max_health
@@ -33,7 +32,6 @@ class Character:
 
     def take_mana(self, mana_points):
         self.curr_mana += mana_points
-        
         if self.curr_mana > self.max_mana:
             self.curr_mana = self.max_mana
 
