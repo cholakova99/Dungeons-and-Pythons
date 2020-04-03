@@ -19,8 +19,8 @@ class Dungeon:
         self.hero = None
 
     def spawn(self, to_be_hero):
-        if type(to_be_hero) != Hero:
-            raise ValueError('Only hero allowed!')
+        if type(to_be_hero) is not Hero:
+            raise TypeError('Only hero allowed!')
         self.hero = to_be_hero
         self.hero.possition = self.hero_possition
 
@@ -178,8 +178,12 @@ class Dungeon:
         num = randint(0, len(self.treasures) - 1)
         if self.treasures[num][0] == "mana":
             self.hero.take_mana(self.treasures[num][1])
+            print(self.treasures[num][1])
+            print("got mana")
         if self.treasures[num][0] == "health":
             self.hero.take_healing(self.treasures[num][1])
+            print(self.treasures[num][1])
+            print("got health")
         if self.treasures[num][0] == "weapon":
             w = Weapon(name=self.treasures[num][1], damage=self.treasures[num][2])
             self.hero.equip(w)
