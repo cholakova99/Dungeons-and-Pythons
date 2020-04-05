@@ -1,4 +1,4 @@
-from withequipment import WithEquipment
+from models import WithEquipment
 
 
 class Spell(WithEquipment):

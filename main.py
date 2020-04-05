@@ -1,6 +1,5 @@
-from dungeon import Dungeon
-from hero import Hero
-from weapon import Weapon
+from models import Hero, Weapon
+from logic import Dungeon
 
 
 def get_player_move(dungeon):
@@ -37,7 +36,7 @@ def play_game():
     quit = False
 
     for i in range(1, 3):
-        file_name = f'level{i}.txt'
+        file_name = f'levels/level{i}.txt'
         dungeon = Dungeon(file_name)
         dungeon.create_treasures('treasures.txt')
         dungeon.spawn(hero)

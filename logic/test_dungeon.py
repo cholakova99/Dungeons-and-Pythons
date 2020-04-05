@@ -1,7 +1,8 @@
 import unittest
-from dungeon import Dungeon
-from hero import Hero
-from enemy import Enemy
+import sys
+sys.path.append('.')
+from logic import Dungeon
+from models import Hero, Enemy
 
 
 class TestDungeon(unittest.TestCase):
