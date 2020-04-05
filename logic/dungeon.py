@@ -1,9 +1,6 @@
 from random import randint
-from hero import Hero
-from enemy import Enemy
-from spell import Spell
-from weapon import Weapon
-from fight import Fight
+from models import Hero, Enemy, Weapon, Spell
+from logic import Fight
 allowed_symbols_for_map = ["#", "S", "T", "E", ".", "G"]
 
 

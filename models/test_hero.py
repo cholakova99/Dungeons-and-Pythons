@@ -1,8 +1,7 @@
 import unittest
-from hero import Hero
-from spell import Spell
-from weapon import Weapon
-from character import Character
+import sys
+sys.path.append('.')
+from models import Hero, Weapon, Spell
 
 
 class TestHero(unittest.TestCase):

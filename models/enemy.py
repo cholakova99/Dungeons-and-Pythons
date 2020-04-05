@@ -1,4 +1,4 @@
-from character import Character
+from models import Character
 
 
 class Enemy(Character):
