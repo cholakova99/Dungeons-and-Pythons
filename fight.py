@@ -77,14 +77,13 @@ class Fight:
             weapon_damage = self.enemy.attack(by='weapon')
             if self.in_cast_range(dist, self.enemy):
                 spell_damage = self.enemy.attack(by='spell')
-            
             max_damage = max(spell_damage, weapon_damage, self.enemy.damage)
 
             if max_damage == self.enemy.damage:
                 self.enemy_basic_attack()
             elif max_damage == self.spell_damage:
                 self.enemy_cast_spell()
-            elif:
+            else:
                 self.enemy_weapon_attack()
 
     def enemy_cast_spell(self):
