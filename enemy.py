@@ -6,13 +6,11 @@ class Enemy(Character):
         super().__init__(health=health, mana=mana)
         self.damage = damage
 
-    def attack(self):
-        spell_damage = 0
-        weapon_damage = 0
-        if self.can_cast():
-            spell_damage = self.equiped_spell.damage
-        if self.equiped_weapon is not None:
-            weapon_damage = self.equiped_weapon.damage
-        max_damage = max(spell_damage, weapon_damage, self.damage)
-
-        return max_damage
+    def attack(self, *, by):
+        if by == 'weapon':
+            if self.equiped_weapon is not None:
+                return self.equiped_weapon.damage
+        if by == 'spell':
+            if super.can_cast():
+                return self.equiped_spell.damage
+        return self.damage
