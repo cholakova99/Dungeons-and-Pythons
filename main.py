@@ -2,31 +2,41 @@ from dungeon import Dungeon
 from hero import Hero
 
 
+def get_player_move(dungeon):
+    next_move = input()
+    while next_move != 'w' and next_move != 'a' and next_move != 's' and next_move != 'd' and next_move != 'j':
+        next_move = input()
+
+    if next_move == 'w':
+        dungeon.move_hero('up')
+    elif next_move == 's':
+        dungeon.move_hero('down')
+    elif next_move == 'a':
+        dungeon.move_hero('left')
+    elif next_move == 'd':
+        dungeon.next_move('right')
+    elif next_move == 'j':
+        dungeon.hero_attack()
+
+
 def play_game():
-    end = False
-    name_of_the_file = input("Please, insert file name:")
-    game_map = Dungeon(name_of_the_file)
-    print("Let's create a hero")
-    hero_name = input("Input hero name:")
-    hero_title = input("Input hero title")
-    hero_health = input("Input hero health")
-    hero_mana = input("Input hero mana")
-    hero_mana_reg = input("Input hero mana regeneration rate")
-    hero = Hero(name=hero_name, title=hero_title, health=hero_health,
-                mana=hero_mana, mana_regeneration_rate=hero_mana_reg)
-    game_map.spawn(hero)
-    instructions = "For moving up - press u \
-        for moving down - press d \
-        for moving left - press l \
-        for moving right - press r"
-    print(instructions)
-    while end is False:
-        movement = input("Move:")
-        game_map.move_hero(movement)
+    hero_name = input('What\'s your name? ')
+    hero_title = input('What is your title? ')
+    hero = Hero(name=hero_name, title=hero_title, health=100, mana=100, mana_regeneration_rate=2)
+    for i in range(1, 4):
+        file_name = f'level{i}.txt'
+        dungeon = Dungeon(file_name)
+        dungeon.spawn(hero)
+
+        while hero.is_alive() and not dungeon.hero_is_at_gateway():
+            get_player_move()
+
+        if not hero.is_alive():
+            break
+
 
 def main():
     play_game()
-
 
 
 if __name__ == '__main__':

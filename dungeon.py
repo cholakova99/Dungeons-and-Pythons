@@ -19,6 +19,9 @@ class Dungeon:
         self.columns = len(self.lines[0])
         self.hero = None
 
+    def hero_is_at_gateway(self):
+        return self.lines[self.hero.position[0]][self.hero.position[1]] == 'G'
+
     def find_spawn_point(self):
         for i in range(len(self.lines)):
             for j in range(len(self.lines[i])):
@@ -73,7 +76,7 @@ class Dungeon:
             self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
 
     def move_hero(self, direction):
-        if direction == "u":
+        if direction == "up":
             if self.hero.position[0] <= 0:
                 return False
             helper = self.check_next_step(self.hero.position[0] - 1, self.hero.position[1])
@@ -83,7 +86,7 @@ class Dungeon:
             self.hero.position[0] -= 1
             self.make_move_changes(helper)
 
-        elif direction == "d":
+        elif direction == "down":
             if self.hero.position[0] >= self.rows - 1:
                 return False
             helper = self.check_next_step(self.hero.position[0] + 1, self.hero.position[1])
@@ -93,7 +96,7 @@ class Dungeon:
             self.hero.position[0] += 1
             self.make_move_changes(helper)
 
-        elif direction == "l":
+        elif direction == "left":
             if self.hero.position[1] <= 0:
                 return False
             helper = self.check_next_step(self.hero.position[0], self.hero.position[1] - 1)
@@ -103,7 +106,7 @@ class Dungeon:
             self.hero.position[1] -= 1
             self.make_move_changes(helper)
 
-        elif direction == "r":
+        elif direction == "right":
             if self.hero.position[1] >= self.columns - 1:
                 return False
             helper = self.check_next_step(self.hero.position[0], self.hero.position[1] + 1)
@@ -183,19 +186,16 @@ class Dungeon:
                 if self.lines[row][col + i] != '.':
                     break
 
-    def hero_attack(self, *, by):
-        if by == 'spell':
-            if self.hero.can_cast():
-                enemy = self.check_for_enemies_in_range()
-                if enemy is not None:
-                    fight = Fight(self.hero, enemy)
-                    fight.start()
-                else:
-                    print(f'Nothing in cast range {self.hero.equiped_spell.cast_range}.')
+    def hero_attack(self):
+        if self.hero.can_cast():
+            enemy = self.check_for_enemies_in_range()
+            if enemy is not None:
+                fight = Fight(self.hero, enemy)
+                fight.start()
             else:
-                print('You can\'t cast a spell.')
-        if by == 'weapon':
-            print('There are no enemies at you position.')
+                print(f'Nothing in cast range {self.hero.equiped_spell.cast_range}.')
+        else:
+            print('You can\'t cast a spell.')
 
 # WITH FILE
     def create_treasures(self, file_treasures):
