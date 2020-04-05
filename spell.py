@@ -11,3 +11,6 @@ class Spell(WithEquipment):
 
     def __eq__(self, other):
         return super().__eq__(other)
+
+    def __str__(self):
+        return f'{self.name}: damage-{self.damage}, cost-{self.mana_cost}, range-{self.cast_range}'

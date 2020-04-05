@@ -222,14 +222,30 @@ class Dungeon:
         num = randint(0, len(self.treasures) - 1)
         if self.treasures[num][0] == "mana":
             self.hero.take_mana(self.treasures[num][1])
-            print(self.treasures[num][1])
+            print(f'Found mana potion: {self.treasures[num][1]}')
+            print(f'Hero current mana: {self.hero.curr_mana}')
         if self.treasures[num][0] == "health":
             self.hero.take_healing(self.treasures[num][1])
-            print(self.treasures[num][1])
+            print(f'Found health potion: {self.treasures[num][1]}')
+            print(f'Hero current health: {self.hero.curr_health}')
         if self.treasures[num][0] == "weapon":
             w = Weapon(name=self.treasures[num][1], damage=self.treasures[num][2])
-            self.hero.equip(w)
+            if self.hero.equiped_weapon is not None:
+                print(f'Equiped: {str(self.hero.equiped_weapon)}')
+                print(f'Offered: {str(w)}')
+                answer = input('Would you like to change weapon? ')
+                if answer == 'y':
+                    self.hero.equip(w)
+            else:
+                self.hero.equip(w)
         if self.treasures[num][0] == "spell":
             s = Spell(name=self.treasures[num][1], damage=self.treasures[num][2],
                       mana_cost=self.treasures[num][3], cast_range=self.treasures[num][4])
-            self.hero.learn(s)
+            if self.hero.equiped_spell is not None:
+                print(f'Learned: {str(self.hero.equiped_spell)}')
+                print(f'Offered: {str(s)}')
+                answer = input('Would you like to learn the new spell? ')
+                if answer == 'y':
+                    self.hero.learn(s)
+            else:
+                self.hero.learn(s)
