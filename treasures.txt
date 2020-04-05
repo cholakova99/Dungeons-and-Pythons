@@ -1,7 +1,9 @@
-mana-100
+mana-30
 mana-50
-health-20
+health-30
 health-50
+weapon-sharp sword-30
 weapon-red knife-20
 weapon-gun-50
+spell-invisible magic-50-30-10
 spell-black magic-50-20-12
