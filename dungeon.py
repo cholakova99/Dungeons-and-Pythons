@@ -20,13 +20,13 @@ class Dungeon:
         self.hero = None
 
     def hero_is_at_gateway(self):
-        return self.lines[self.hero.position[0]][self.hero.position[1]] == 'G'
+        return self.lines[self.hero.position[0]][self.hero.position[1]] == "G"
 
     def find_spawn_point(self):
         for i in range(len(self.lines)):
             for j in range(len(self.lines[i])):
                 if self.lines[i][j] == 'S':
-                    return [i][j]
+                    return [i, j]
 
     def spawn(self, to_be_hero):
         if type(to_be_hero) is not Hero:
@@ -70,10 +70,9 @@ class Dungeon:
                         fight.start()
         if helper == 'treasure':
             self.take_treasure()
-        if helper == 'gateway':
-            pass  # TO DO
-        if self.hero.is_alive():
+        if not helper == 'gateway' and self.hero.is_alive():
             self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
+        self.hero.take_mana(self.hero.mana_regeneration_rate)
 
     def move_hero(self, direction):
         if direction == "up":
@@ -115,8 +114,7 @@ class Dungeon:
             self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
             self.hero.position[1] += 1
             self.make_move_changes(helper)
-        else:
-            return "Wrong direction"
+        return True
 
     def check_next_step(self, row_index, col_index):
         if self.lines[row_index][col_index] == "G":
@@ -138,10 +136,10 @@ class Dungeon:
                 if self.lines[i][j] == 'E':
                     hero_hp = self.hero.max_health
                     hero_mana = self.hero.max_mana
-                    hero_dmg = max(self.hero.attack(by='weapon'), self.hero.attack(by='spell'))
+                    # hero_dmg = max(self.hero.attack(by='weapon'), self.hero.attack(by='spell'))
                     enemy_hp = randint(hero_hp * 0.75, hero_hp * 1.25)
                     enemy_mana = randint(hero_mana * 0.5, hero_mana * 2)
-                    enemy_dmg = randint(hero_dmg - (hero_dmg % 10), hero_dmg + (hero_dmg % 10))
+                    enemy_dmg = 10  # randint(hero_dmg - (hero_dmg % 10), hero_dmg + (hero_dmg % 10))
                     enemy = Enemy(health=enemy_hp, mana=enemy_mana, damage=enemy_dmg)
                     enemy.position = [i, j]
                     # Here we can add a chance to equip weapon or learn a spell
@@ -190,12 +188,22 @@ class Dungeon:
         if self.hero.can_cast():
             enemy = self.check_for_enemies_in_range()
             if enemy is not None:
+                self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
+                pre_fight_enemy_pos = enemy.position
+
                 fight = Fight(self.hero, enemy)
                 fight.start()
+
+                if not enemy.is_alive():
+                    self.change_possition_value(pre_fight_enemy_pos[0], pre_fight_enemy_pos[1], ".")
+                if self.hero.is_alive():
+                    self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
+                return True
             else:
                 print(f'Nothing in cast range {self.hero.equiped_spell.cast_range}.')
         else:
             print('You can\'t cast a spell.')
+        return False
 
 # WITH FILE
     def create_treasures(self, file_treasures):

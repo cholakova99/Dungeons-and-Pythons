@@ -7,7 +7,8 @@ class Fight:
         self.print_start_of_fight()
         while self.hero.curr_health > 0 and self.enemy.curr_health > 0:
             self.hero_turn()
-            self.enemy_turn()
+            if self.enemy.is_alive():
+                self.enemy_turn()
 
         self.print_result_of_fight()
 
@@ -60,7 +61,7 @@ class Fight:
         self.print_action(self.hero, self.enemy, act='weapon')
 
     def hero_cast_spell(self):
-        self.hero.curr_mana -= self.hero.equiped_spell.curr_mana
+        self.hero.curr_mana -= self.hero.equiped_spell.mana_cost
         self.enemy.take_damage(self.hero.equiped_spell.damage)
         self.print_action(self.hero, self.enemy, act='spell')
 
@@ -75,7 +76,7 @@ class Fight:
         else:
             spell_damage = 0
             weapon_damage = self.enemy.attack(by='weapon')
-            if self.in_cast_range(dist, self.enemy):
+            if self.enemy.can_cast() and self.in_cast_range(dist, self.enemy):
                 spell_damage = self.enemy.attack(by='spell')
             max_damage = max(spell_damage, weapon_damage, self.enemy.damage)
 
@@ -118,7 +119,7 @@ class Fight:
                     message = 'Hero tries to attack the enemy but fails miserably, dealing 0 dmg to the enemy.'
                 else:
                     message = f'Enemy hits hero for {self.enemy.damage} dmg.'
-            message += f' {other_class} health is {self.enemy.curr_health}'
+            message += f' {other_class} health is {other.curr_health}'
 
         print(message)
 
