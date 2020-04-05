@@ -1,7 +1,0 @@
-mana-100
-mana-50
-health-20
-health-50
-weapon-red knife-20
-weapon-gun-50
-spell-black magic-50-20-12
