@@ -36,9 +36,9 @@ def play_game():
     quit = False
 
     for i in range(1, 3):
-        file_name = f'levels/level{i}.txt'
+        file_name = f'levels_and_treasures/level{i}.txt'
         dungeon = Dungeon(file_name)
-        dungeon.create_treasures('treasures.txt')
+        dungeon.create_treasures('levels_and_treasures/treasures.txt')
         dungeon.spawn(hero)
 
         print(f'{hero.known_as()} entered dungeon {i}')
