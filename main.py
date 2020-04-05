@@ -21,8 +21,7 @@ def get_player_move(dungeon):
 
 def play_game():
     hero_name = input('What\'s your name? ')
-    hero_title = input('What is your title? ')
-    hero = Hero(name=hero_name, title=hero_title, health=100, mana=100, mana_regeneration_rate=2)
+    hero = Hero(name=hero_name, title='Vagabond', health=100, mana=100, mana_regeneration_rate=2)
     for i in range(1, 4):
         file_name = f'level{i}.txt'
         dungeon = Dungeon(file_name)
@@ -33,6 +32,7 @@ def play_game():
 
         if not hero.is_alive():
             break
+        hero.level_up()
 
 
 def main():
