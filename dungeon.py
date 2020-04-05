@@ -136,10 +136,10 @@ class Dungeon:
                 if self.lines[i][j] == 'E':
                     hero_hp = self.hero.max_health
                     hero_mana = self.hero.max_mana
-                    # hero_dmg = max(self.hero.attack(by='weapon'), self.hero.attack(by='spell'))
+                    hero_dmg = max(self.hero.attack(by='weapon'), self.hero.attack(by='spell'))
                     enemy_hp = randint(hero_hp * 0.75, hero_hp * 1.25)
                     enemy_mana = randint(hero_mana * 0.5, hero_mana * 2)
-                    enemy_dmg = 10  # randint(hero_dmg - (hero_dmg % 10), hero_dmg + (hero_dmg % 10))
+                    enemy_dmg = randint(hero_dmg - (hero_dmg % 10), hero_dmg + (hero_dmg % 10))
                     enemy = Enemy(health=enemy_hp, mana=enemy_mana, damage=enemy_dmg)
                     enemy.position = [i, j]
                     # Here we can add a chance to equip weapon or learn a spell

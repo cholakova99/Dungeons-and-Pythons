@@ -2,6 +2,7 @@ from dungeon import Dungeon
 from hero import Hero
 from weapon import Weapon
 
+
 def get_player_move(dungeon):
     next_move = input()
     while next_move != 'w' and next_move != 'a' and next_move != 's' and next_move != 'd' and next_move != 'j':
@@ -30,8 +31,10 @@ def ask_to_continue():
 def play_game():
     hero_name = input('What\'s your name? ')
     hero = Hero(name=hero_name, title='Vagabond', health=100, mana=100, mana_regeneration_rate=2)
-    weapon = Weapon(name='Black cleaver', damage=50)
+    weapon = Weapon(name='Wooden sword', damage=10)
     hero.equip(weapon)
+
+    quit = False
 
     for i in range(1, 3):
         file_name = f'level{i}.txt'
@@ -48,11 +51,16 @@ def play_game():
 
         if not hero.is_alive():
             print('GAME OVER')
+            quit = True
             break
         hero.level_up()
 
         if i != 2 and not ask_to_continue():
+            quit = True
             break
+
+    if not quit:
+        print('Congratulations, you won the game! :)')
 
 
 def main():
