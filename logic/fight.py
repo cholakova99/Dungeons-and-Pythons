@@ -44,14 +44,14 @@ class Fight:
 
     def get_cast_or_move(self):
         print(f'You have enough mana to cast {self.hero.equiped_spell.name}')
-        command = input('To cast the spell: Press c\n To move: Press m')
+        command = input('To cast the spell: Press c\nTo move: Press m\n')
         while command != 'c' and command != 'm':
             command = input()
         return command
 
     def get_cast_or_melee(self):
         print(f'You have enough mana to cast {self.hero.equiped_spell.name}')
-        command = input('To cast the spell: Press c\n To attack with weapon: Press a')
+        command = input('To cast the spell: Press c\nTo attack with weapon: Press a\n')
         while command != 'c' and command != 'a':
             command = input()
         return command

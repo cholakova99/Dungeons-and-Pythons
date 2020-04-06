@@ -56,7 +56,7 @@ def play_game():
             break
         hero.level_up()
 
-        if i != 2 and not ask_to_continue():
+        if i != 3 and not ask_to_continue():
             quit = True
             break
 

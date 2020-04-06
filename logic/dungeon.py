@@ -131,22 +131,19 @@ class Dungeon:
         for i in range(len(self.lines)):
             for j in range(len(self.lines[i])):
                 if self.lines[i][j] == 'E':
-                    hero_hp = self.hero.max_health
-                    hero_mana = self.hero.max_mana
-                    hero_dmg = max(self.hero.attack(by='weapon'), self.hero.attack(by='spell'))
-                    enemy_hp = randint(hero_hp * 0.75, hero_hp * 1.25)
-                    enemy_mana = randint(hero_mana * 0.5, hero_mana * 2)
-                    enemy_dmg = randint(hero_dmg - (hero_dmg % 10), hero_dmg + (hero_dmg % 10))
+                    enemy_hp = randint(50 * self.hero.level, 100 * self.hero.level)
+                    enemy_mana = randint(50 * self.hero.level, 100 * self.hero.level)
+                    enemy_dmg = randint(5 * self.hero.level, 10 * self.hero.level)
                     enemy = Enemy(health=enemy_hp, mana=enemy_mana, damage=enemy_dmg)
                     enemy.position = [i, j]
                     # Here we can add a chance to equip weapon or learn a spell
                     self.enemies.append(enemy)
 
     def check_for_enemies_in_range(self):
-        spell_range = self.hero.equiped_spell.cast_range
+        spell_range = self.hero.equiped_spell.cast_range + 1
         row, col = self.hero.position
         # Look up
-        for i in range(spell_range):
+        for i in range(1, spell_range):
             if row - i >= 0:
                 if self.lines[row - i][col] == 'E':
                     for enemy in self.enemies:
@@ -155,7 +152,7 @@ class Dungeon:
                 if self.lines[row - i][col] != '.':
                     break
         # Look down
-        for i in range(spell_range):
+        for i in range(1, spell_range):
             if row + i < self.rows:
                 if self.lines[row + i][col] == 'E':
                     for enemy in self.enemies:
@@ -164,7 +161,7 @@ class Dungeon:
                 if self.lines[row + i][col] != '.':
                     break
         # Look left
-        for i in range(spell_range):
+        for i in range(1, spell_range):
             if col - i >= 0:
                 if self.lines[row][col - i] == 'E':
                     for enemy in self.enemies:
@@ -172,7 +169,7 @@ class Dungeon:
                             return enemy
                 if self.lines[row][col - i] != '.':
                     break
-        for i in range(spell_range):
+        for i in range(1, spell_range):
             if col + i < self.columns:
                 if self.lines[row][col + i] == 'E':
                     for enemy in self.enemies:
@@ -186,13 +183,13 @@ class Dungeon:
             enemy = self.check_for_enemies_in_range()
             if enemy is not None:
                 self.change_possition_value(self.hero.position[0], self.hero.position[1], ".")
-                pre_fight_enemy_pos = enemy.position
+                self.change_possition_value(enemy.position[0], enemy.position[1], '.')
 
-                fight = Fight(self.hero, enemy)
+                fight = Fight(hero=self.hero, enemy=enemy)
                 fight.start()
 
-                if not enemy.is_alive():
-                    self.change_possition_value(pre_fight_enemy_pos[0], pre_fight_enemy_pos[1], ".")
+                if enemy.is_alive():
+                    self.change_possition_value(enemy.position[0], enemy.position[1], 'E')
                 if self.hero.is_alive():
                     self.change_possition_value(self.hero.position[0], self.hero.position[1], "H")
                 return True
@@ -246,3 +243,4 @@ class Dungeon:
                     self.hero.learn(s)
             else:
                 self.hero.learn(s)
+                print(f'Learned new spell: {str(self.hero.equiped_spell)}')
