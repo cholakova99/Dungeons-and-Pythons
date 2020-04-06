@@ -11,7 +11,7 @@ from models import Hero, Enemy
 class TestDungeon(unittest.TestCase):
     def test_file(self):
         e = None
-        c = "wrong_example.txt"
+        c = "levels_and_treasures/map_for_tests2.txt"
         try:
             Dungeon(c)
         except ValueError as error:
