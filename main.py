@@ -28,6 +28,8 @@ def ask_to_continue():
 
 
 def play_game():
+    print('Controls:\n-Move up - w\n-Move down - s\n-Move left - a\n-Move right - d\n-Cast a spell out of fight - j\n')
+
     hero_name = input('What\'s your name? ')
     hero = Hero(name=hero_name, title='Vagabond', health=100, mana=100, mana_regeneration_rate=2)
     weapon = Weapon(name='Wooden sword', damage=10)
@@ -35,7 +37,7 @@ def play_game():
 
     quit = False
 
-    for i in range(1, 3):
+    for i in range(1, 4):
         file_name = f'levels_and_treasures/level{i}.txt'
         dungeon = Dungeon(file_name)
         dungeon.create_treasures('levels_and_treasures/treasures.txt')
